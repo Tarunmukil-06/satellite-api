@@ -1,0 +1,14 @@
+{
+  "name": "satellite-backend",
+  "version": "1.0.0",
+  "main": "server.js",
+  "engines": { "node": ">=18" },
+  "scripts": { "start": "node server.js", "test": "node test.js" },
+
+  "dependencies": {
+    "astronomy-engine": "^2.1.19",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "satellite.js": "^7.1.0"
+  }
+}
