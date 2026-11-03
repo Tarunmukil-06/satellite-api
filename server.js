@@ -17,10 +17,11 @@ fs.mkdirSync(DATA_DIR, { recursive: true });
 const GROUPS = ['visual', 'stations'];
 const MAX_AGE_MS = 6 * 60 * 60 * 1000;
 const RETRY_MS = 3 * 60 * 1000;
-const urlsFor = (g) => [
-  `https://celestrak.org/NORAD/elements/gp.php?GROUP=${g}&FORMAT=tle`,
-  `https://celestrak.com/NORAD/elements/gp.php?GROUP=${g}&FORMAT=tle`,
-];
+  const REPO_RAW = 'https://raw.githubusercontent.com/Tarunmukil-06/satellite-api/main/seed';
+  const urlsFor = (g) => [
+    `${REPO_RAW}/${g}.tle`, // kept fresh by the GitHub job (reachable from Render)
+    `https://celestrak.org/NORAD/elements/gp.php?GROUP=${g}&FORMAT=tle`,
+  ];
 
 let items = [];
 let loadedAt = 0; // last successful load
@@ -33,7 +34,7 @@ async function download(group) {
     try {
       const res = await fetch(url, {
         headers: { 'User-Agent': 'satellite-sky/1.0 (personal project)' },
-        signal: AbortSignal.timeout(20000),
+        signal: AbortSignal.timeout(8000),
       });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const text = await res.text();
